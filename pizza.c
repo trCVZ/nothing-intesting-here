@@ -68,14 +68,30 @@ int contains_ingredient(const pizza* pizza, const char* ingredient) {
 }
 
 void print_pizza(const pizza* p) {
-    printf("Pizza: %s\n", p->name);
-    printf("Ingredients:\n");
+    printf("Pizza : %s\n", p->name);
+    printf("Ingredients :\n");
     for (int i = 0; i < p->num_ingredients; i++) {
         if (p->ingredients[i].price != 0.00) {
-            printf("  - %s: $%.2f\n", p->ingredients[i].name, p->ingredients[i].price);
+            printf("  - %s : $%.2f\n", p->ingredients[i].name, p->ingredients[i].price);
         }
     }
-    printf("Total price: $%.2f\n", p->price);
+    printf("Total price : $%.2f\n", p->price);
+}
+
+int add_ingredient(pizza* pizza, const char* ingredient_name) {
+    if (pizza->num_ingredients >= MAX_INGREDIENTS) {
+        return 0;
+    }
+    ingredient ing = find_ingredient_by_name(ingredient_name);
+    if (strcmp(ing.name, "") == 0) {
+        return 0;
+    }
+
+    int index = pizza->num_ingredients;
+    pizza->ingredients[index] = ing;
+    pizza->price += ing.price;
+    pizza->num_ingredients++;
+    return 1;
 }
 
 int main() {
@@ -90,7 +106,33 @@ int main() {
     init_pizza(&pizza_deluxe, "Deluxe", selected_ingredients, num_selected_ingredients);
     print_pizza(&pizza_deluxe);
 
-    printf("%i\n", contains_ingredient(&pizza_deluxe, "Tomato Sauce"));
-    printf("%i", contains_ingredient(&pizza_deluxe, "Tomata Saue"));
+    printf("Pizza Deluxe contains 'Tomato Sauce' : %i\n", contains_ingredient(&pizza_deluxe, "Tomato Sauce"));
+    printf("Pizza Deluxe contains 'Tomato Saue' :  %i\n", contains_ingredient(&pizza_deluxe, "Tomata Saue"));
+
+    printf("Add Beef to Pizza Deluxe : ");
+    printf("%i\n", add_ingredient(&pizza_deluxe, "Beef"));
+
+
+    print_pizza(&pizza_deluxe);
+
     return 0;
 }
+
+// Liste des fonctions à ajouter
+
+/*Ajouter un ingrédient : Une fonction pour ajouter un nouvel ingrédient à une pizza existante.
+Supprimer un ingrédient : Une fonction pour supprimer un ingrédient d'une pizza existante.
+Modifier le prix d'un ingrédient : Une fonction pour modifier le prix d'un ingrédient spécifique dans la liste des ingrédients.
+Calculer le nombre total de calories : Une fonction pour calculer le nombre total de calories d'une pizza en fonction des calories de chaque ingrédient.
+Rechercher une pizza par nom : Une fonction pour rechercher une pizza par son nom dans une liste de pizzas.
+Lister toutes les pizzas : Une fonction pour afficher toutes les pizzas disponibles dans une liste.
+Trier les pizzas par prix : Une fonction pour trier les pizzas par prix, du moins cher au plus cher.
+Trier les pizzas par nombre d'ingrédients : Une fonction pour trier les pizzas par nombre d'ingrédients, de la plus simple à la plus complexe.
+Calculer le coût moyen des ingrédients : Une fonction pour calculer le coût moyen des ingrédients d'une pizza.
+Comparer deux pizzas : Une fonction pour comparer deux pizzas et déterminer laquelle est la plus chère ou laquelle a le plus d'ingrédients.
+Sauvegarder les pizzas dans un fichier : Une fonction pour sauvegarder la liste des pizzas dans un fichier pour une utilisation ultérieure.
+Charger les pizzas depuis un fichier : Une fonction pour charger la liste des pizzas depuis un fichier.
+Calculer le prix total de toutes les pizzas : Une fonction pour calculer le prix total de toutes les pizzas dans une liste.
+Filtrer les pizzas par ingrédient : Une fonction pour filtrer les pizzas qui contiennent un ingrédient spécifique.
+Afficher les ingrédients uniques : Une fonction pour afficher tous les ingrédients uniques utilisés dans toutes les pizzas.
+*/
