@@ -14,6 +14,7 @@ typedef struct pizza {
     ingredient ingredients[MAX_INGREDIENTS];
     float price;
     char name[MAX_NAME_LENGTH];
+    int num_ingredients;
 } pizza;
 
 const ingredient ingredient_list[] = {
@@ -55,6 +56,15 @@ void init_pizza(pizza* pizza, const char* name, const char* ingredient_names[], 
     pizza->price = roundf(pizza->price * 100) / 100;
 }
 
+int contains_ingredient(const pizza* pizza, const char* ingredient) {
+    for (size_t i = 0; i < sizeof(pizza->ingredients) / sizeof(pizza->ingredients[0]); i++) {
+        if (strcmp(pizza->ingredients[i].name, ingredient) == 0) {
+            return 1;
+        }
+    }
+    return 0;
+}
+
 void print_pizza(const pizza* p) {
     printf("Pizza: %s\n", p->name);
     printf("Ingredients:\n");
@@ -75,5 +85,8 @@ int main() {
 
     init_pizza(&pizza_deluxe, "Deluxe", selected_ingredients, num_selected_ingredients);
     print_pizza(&pizza_deluxe);
+
+    printf("%i\n", contains_ingredient(&pizza_deluxe, "Tomato Sauce"));
+    printf("%i", contains_ingredient(&pizza_deluxe, "Tomata Saue"));
     return 0;
 }
