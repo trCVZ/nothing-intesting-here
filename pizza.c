@@ -44,12 +44,14 @@ void init_pizza(pizza* pizza, const char* name, const char* ingredient_names[], 
     pizza->name[MAX_NAME_LENGTH - 1] = '\0';
 
     pizza->price = 0.0;
+    pizza->num_ingredients = 0;
 
     for (size_t i = 0; i < num_ingredients; i++) {
         ingredient ing = find_ingredient_by_name(ingredient_names[i]);
         if (ing.price != 0.0) {
             pizza->ingredients[i] = ing;
             pizza->price += ing.price;
+            pizza->num_ingredients++;
         }
     }
 
@@ -68,8 +70,10 @@ int contains_ingredient(const pizza* pizza, const char* ingredient) {
 void print_pizza(const pizza* p) {
     printf("Pizza: %s\n", p->name);
     printf("Ingredients:\n");
-    for (size_t i = 0; i < MAX_INGREDIENTS && p->ingredients[i].price != 0; i++) {
-        printf("  - %s: $%.2f\n", p->ingredients[i].name, p->ingredients[i].price);
+    for (int i = 0; i < p->num_ingredients; i++) {
+        if (p->ingredients[i].price != 0.00) {
+            printf("  - %s: $%.2f\n", p->ingredients[i].name, p->ingredients[i].price);
+        }
     }
     printf("Total price: $%.2f\n", p->price);
 }
@@ -79,7 +83,7 @@ int main() {
     const char* selected_ingredients[] = {
         "Tomato Sauce",
         "Chicken",
-        "Goat Cheese"
+        "Goat Cheese",
     };
     size_t num_selected_ingredients = sizeof(selected_ingredients) / sizeof(selected_ingredients[0]);
 
